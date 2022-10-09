@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 @TestInstance(PER_CLASS)
-class CustomerDaoIT {
+class CustomerDaoTest {
 
     private final SessionFactory sessionFactory = HibernateUtil.buildSession().getSessionFactory();
     private final CustomerDao customerDao = CustomerDao.getInstance();
@@ -26,7 +26,7 @@ class CustomerDaoIT {
 
     @BeforeAll
     public void initDb() {
-        System.out.println("Инициализируем нашей сущности.");
+        System.out.println("Инициализирование нашей сущности.");
     }
 
     @AfterAll
@@ -73,7 +73,7 @@ class CustomerDaoIT {
         assertThat(results).hasSize(3);
 
         List<String> names = results.stream().map(Customer::getFirstName).toList();
-        assertThat(names).contains("Holman", "Kirby", "Woolley");
+        assertThat(names).contains("Isobelle", "Findlay", "Cleveland");
 
         session.getTransaction().commit();
     }
@@ -84,10 +84,10 @@ class CustomerDaoIT {
         session.beginTransaction();
 
         List<Customer> results = customerDao.findAllByStatus(session, Status.ACTIVE);
-        assertThat(results).hasSize(9);
+        assertThat(results).hasSize(10);
 
         List<String> names = results.stream().map(Customer::getFirstName).toList();
-        assertThat(names).containsExactlyInAnyOrder("Findlay", "Cleveland", "Herman", "Brandy", "Kirby", "Donald", "Holman", "Woolley", "Riya");
+        assertThat(names).containsExactlyInAnyOrder("Isobelle","Findlay", "Cleveland", "Herman", "Brandy", "Kirby", "Donald", "Holman", "Woolley", "Riya");
 
         session.getTransaction().commit();
     }

@@ -1,7 +1,7 @@
 package az.online.shop.util;
 
 import az.online.shop.entity.Customer;
-import az.online.shop.entity.Info;
+import az.online.shop.entity.PersonalInfo;
 import az.online.shop.entity.Order;
 import az.online.shop.entity.Product;
 import az.online.shop.model.Gender;
@@ -24,7 +24,7 @@ public class TestObjectUtils {
             .surname("test1")
             .build();
 
-    public static final Info INFO = Info.builder()
+    public static final PersonalInfo INFO = PersonalInfo.builder()
             .phoneNumber("test1")
             .address("test1")
             .gender(Gender.FEMALE)
@@ -56,8 +56,8 @@ public class TestObjectUtils {
     }
 
 
-    public static Info getInfo() {
-        return Info.builder()
+    public static PersonalInfo getInfo() {
+        return PersonalInfo.builder()
                 .phoneNumber("+994516089260")
                 .address("test")
                 .gender(Gender.MALE)

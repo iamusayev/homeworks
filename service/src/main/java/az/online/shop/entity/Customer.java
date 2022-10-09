@@ -1,11 +1,14 @@
 package az.online.shop.entity;
 
 import az.online.shop.model.Role;
+import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,22 +36,23 @@ public class Customer extends BaseEntity<Integer> {
 
     private String password;
 
+    private LocalDate birthDate;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Order order;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> orders;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Info info;
+    private PersonalInfo personalInfo;
 
-    public void setInfo(Info info) {
+    public void setPersonalInfo(PersonalInfo info) {
         info.setCustomer(this);
-        this.info = info;
+        this.personalInfo = info;
     }
 
     public void setOrder(Order order) {
         order.setCustomer(this);
-        this.order = order;
     }
 }
