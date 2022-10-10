@@ -40,6 +40,7 @@ public class Order extends BaseEntity<Integer> {
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
+    @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 }

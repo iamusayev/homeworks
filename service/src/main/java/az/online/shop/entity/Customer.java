@@ -2,7 +2,10 @@ package az.online.shop.entity;
 
 import az.online.shop.model.Role;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,6 +20,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "customer")
@@ -41,18 +46,21 @@ public class Customer extends BaseEntity<Integer> {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Order> orders;
-
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private PersonalInfo personalInfo;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     public void setPersonalInfo(PersonalInfo info) {
         info.setCustomer(this);
         this.personalInfo = info;
     }
 
-    public void setOrder(Order order) {
+    public void addOrder(Order order) {
+        orders.add(order);
         order.setCustomer(this);
     }
+
 }
