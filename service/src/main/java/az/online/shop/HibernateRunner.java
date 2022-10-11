@@ -11,3 +11,4 @@ public class HibernateRunner {
         session.find(Customer.class, 1, LockModeType.OPTIMISTIC);
     }
 }
+
