@@ -18,4 +18,5 @@ public class BaseEntity<T extends Serializable> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private T id;
+
 }

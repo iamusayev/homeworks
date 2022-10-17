@@ -16,10 +16,14 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lombok.version>1.18.24</lombok.version>
         <junit.version>5.9.0</junit.version>
-        <postgres.artifact.id>postgresql</postgres.artifact.id>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hibernate.jpamodelgen.version>5.6.8.Final</hibernate.jpamodelgen.version>
+        <querydsl.version>5.0.0</querydsl.version>
+        <javax.persistence-api>2.2</javax.persistence-api>
+        <hibernate.validator.version>6.0.22.Final</hibernate.validator.version>
+        <javax.el.version>3.0.0</javax.el.version>
     </properties>
 
     <dependencyManagement>
@@ -30,10 +34,41 @@
                 <version>5.5.6.Final</version>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-jpamodelgen</artifactId>
+                <version>${hibernate.jpamodelgen.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.postgresql</groupId>
-                <artifactId>${postgres.artifact.id}</artifactId>
+                <artifactId>postgresql</artifactId>
                 <version>42.5.0</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -56,6 +91,7 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.23.1</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -65,7 +101,7 @@
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>
-                <artifactId>${postgres.artifact.id}</artifactId>
+                <artifactId>postgresql</artifactId>
                 <version>1.17.4</version>
                 <scope>test</scope>
             </dependency>
@@ -73,6 +109,76 @@
     </dependencyManagement>
 
     <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-wrapper-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.querydsl</groupId>
+                    <artifactId>querydsl-maven-plugin</artifactId>
+                    <version>5.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>jpa-export</goal>
+                            </goals>
+                            <configuration>
+                                <targetFolder>target/generated-sources/java</targetFolder>
+                                <!-- You have to pass your entity package here -->
+                                <packages>
+                                    <package>com.dmdev.querydsl.entity</package>
+                                </packages>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <!-- querydsl plugin does not contain javax lib for generating jpa model -->
+                    <dependencies>
+                        <dependency>
+                            <groupId>javax.persistence</groupId>
+                            <artifactId>javax.persistence-api</artifactId>
+                            <version>${javax.persistence-api}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.10.1</version>
+                    <configuration>
+                        <annotationProcessors>
+                            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</annotationProcessor>
+                            <annotationProcessor>com.querydsl.apt.jpa.JPAAnnotationProcessor</annotationProcessor>
+                            <annotationProcessor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</annotationProcessor>
+                        </annotationProcessors>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>com.querydsl</groupId>
+                                <artifactId>querydsl-apt</artifactId>
+                                <version>${querydsl.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-jpamodelgen</artifactId>
+                                <version>${hibernate.jpamodelgen.version}</version>
+                            </path>
+                            <path>
+                                <groupId>javax.persistence</groupId>
+                                <artifactId>javax.persistence-api</artifactId>
+                                <version>${javax.persistence-api}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+            </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>

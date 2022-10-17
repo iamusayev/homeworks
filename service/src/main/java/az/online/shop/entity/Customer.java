@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
+@NamedEntityGraph(
+        name = "WithOrders",
+        attributeNodes = {
+                @NamedAttributeNode("orders")
+        }
+)
 @EqualsAndHashCode(exclude = {"orders", "personalInfo"})
 @ToString(exclude = {"orders", "personalInfo"})
 @AllArgsConstructor

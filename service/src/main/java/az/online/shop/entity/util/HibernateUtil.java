@@ -20,5 +20,4 @@ public class HibernateUtil {
         Configuration configure = configuration.configure();
         return configuration;
     }
-
 }
