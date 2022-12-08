@@ -1,5 +1,6 @@
 package az.online.shop.entity;
 
+
 import az.online.shop.model.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,9 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +21,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "orders")
 @Data
-@ToString(exclude = {"orderProducts", "customer"})
-@EqualsAndHashCode(exclude = {"orderProducts", "customer"})
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -35,6 +33,7 @@ public class Order extends BaseEntity<Integer> {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
@@ -42,6 +41,3 @@ public class Order extends BaseEntity<Integer> {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 }
-
-
-

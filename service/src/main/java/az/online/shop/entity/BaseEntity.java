@@ -9,11 +9,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @MappedSuperclass
 @Data
 @Getter
 @Setter
-public class BaseEntity<T extends Serializable> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

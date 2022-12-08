@@ -1,0 +1,51 @@
+create table customer
+(
+    id         SERIAL PRIMARY KEY,
+    first_name VARCHAR(128) NOT NULL,
+    surname    VARCHAR(128) NOT NULL,
+    email      VARCHAR(128) NOT NULL UNIQUE,
+    password   VARCHAR(128) NOT NULL,
+    role       VARCHAR(16),
+    order_id   INT UNIQUE REFERENCES orders (id)
+);
+
+
+create table info
+(
+    id           SERIAL PRIMARY KEY,
+    phone_number VARCHAR(32)  NOT NULL UNIQUE,
+    address      VARCHAR(256) NOT NULL,
+    customer_id  INT REFERENCES customer (id),
+    gender       VARCHAR(16)
+);
+
+create table orders
+(
+    id                SERIAL PRIMARY KEY,
+    registration_date DATE        NOT NULL,
+    closing_date      DATE        NOT NULL,
+    status            VARCHAR(32) NOT NULL
+);
+
+
+create table product
+(
+    id                 SERIAL PRIMARY KEY,
+    name               VARCHAR(256)   NOT NULL,
+    description        TEXT           NOT NULL,
+    price              NUMERIC(16, 2) NOT NULL,
+    remaining_quantity INT        NOT NULL
+);
+
+
+create table order_product
+(
+    id SERIAL PRIMARY KEY,
+    product_id INT REFERENCES product(id),
+    order_id   INT REFERENCES orders(id),
+    created_at TIMESTAMP,
+    count      INT
+);
+
+
+
