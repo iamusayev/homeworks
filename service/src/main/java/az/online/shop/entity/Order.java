@@ -9,8 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +21,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "orders")
 @Data
-@ToString(exclude = "orderProducts")
-@EqualsAndHashCode(exclude = "orderProducts")
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -35,9 +33,11 @@ public class Order extends BaseEntity<Integer> {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
+    @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package az.online.shop.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,6 +32,4 @@ public class Product extends BaseEntity<Integer> {
 
     private Integer remainingQuantity;
 
-    @OneToMany(mappedBy = "product")
-    private List<OrderProduct> orderProducts = new ArrayList<>();
-}
+
