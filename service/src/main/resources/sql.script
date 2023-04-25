@@ -4,13 +4,13 @@ create table customer
     first_name VARCHAR(128) NOT NULL,
     surname    VARCHAR(128) NOT NULL,
     email      VARCHAR(128) NOT NULL UNIQUE,
+    birth_date DATE NOT NULL ,
     password   VARCHAR(128) NOT NULL,
-    role       VARCHAR(16),
-    order_id   INT UNIQUE REFERENCES orders (id)
+    role       VARCHAR(16)
 );
 
 
-create table info
+create table personal_info
 (
     id           SERIAL PRIMARY KEY,
     phone_number VARCHAR(32)  NOT NULL UNIQUE,
@@ -24,7 +24,8 @@ create table orders
     id                SERIAL PRIMARY KEY,
     registration_date DATE        NOT NULL,
     closing_date      DATE        NOT NULL,
-    status            VARCHAR(32) NOT NULL
+    status            VARCHAR(32) NOT NULL,
+    customer_id INT REFERENCES customer(id)
 );
 
 
@@ -47,5 +48,95 @@ create table order_product
     count      INT
 );
 
+INSERT INTO customer (email, first_name, surname, password, role, birth_date)
+VALUES ('isabelle@gmai.com', 'Isobelle', 'Valentine', 'valentine123', 'USER', '01-01-1999'),
+       ('findlay@gmail.com', 'Findlay', 'Miruna', 'miruna123', 'USER', '02-02-2000'),
+       ('cleveland@gmail.com', 'Cleveland', 'Abida', 'abida123', 'USER', '03-03-2001'),
+       ('herman@gmail.com', 'Herman', 'Webb', 'webb123', 'USER', '04-04-2002'),
+       ('beaumont@gmail.com', 'Brandy', 'Beaumont', 'beaumont123', 'USER', '05-05-2003'),
+       ('kirby@gmail.com', 'Kirby', 'Reo', 'reo123', 'USER', '06-06-2004'),
+       ('donald@gmail.com', 'Donald', 'Marcel', 'marcel123', 'USER','07-07-2005'),
+       ('holman@gmail.com', 'Holman', 'Jevan', 'jevan123', 'USER', '08-08-2006'),
+       ('woolley@gmail.com', 'Woolley', 'Mylah', 'mylah123', 'USER', '09-09-2007'),
+       ('riya@gmail.com', 'Riya', 'Zimmerman', 'zimmerman123', 'USER','10-10-2008');
+
+INSERT INTO personal_info (address, gender, phone_number, customer_id)
+VALUES ('test1', 'MALE', '5678943570', 1),
+       ('test2', 'MALE', '6785435892', 2),
+       ('test3', 'MALE', '8905368562', 3),
+       ('test4', 'MALE', '9876435792', 4),
+       ('test5', 'MALE', '7809665832', 5),
+       ('test6', 'MALE', '9876543792', 6),
+       ('test7', 'MALE', '0965357542', 7),
+       ('test8', 'MALE', '1468254252', 8),
+       ('test9', 'MALE', '4354325324', 9),
+       ('test10', 'MALE', '4142133232', 10);
+
+
+INSERT INTO orders (registration_date, closing_date, status, customer_id)
+VALUES ('01-01-2020', '02-01-2020', 'ACTIVE', 1),
+       ('03-01-2020', '04-01-2020', 'ACTIVE', 2),
+       ('04-01-2020', '05-01-2020', 'ACTIVE', 3),
+       ('06-01-2020', '07-01-2020', 'ACTIVE', 4),
+       ('08-01-2020', '09-01-2020', 'ACTIVE', 5),
+       ('10-01-2020', '11-01-2020', 'ACTIVE', 6),
+       ('12-01-2020', '13-01-2020', 'ACTIVE', 7),
+       ('14-01-2020', '15-01-2020', 'ACTIVE', 8),
+       ('16-01-2020', '17-01-2020', 'ACTIVE', 9),
+       ('18-01-2020', '19-01-2020', 'ACTIVE', 10),
+       ('20-01-2020', '21-01-2020', 'ACTIVE', 1),
+       ('22-01-2020', '23-01-2020', 'ACTIVE', 2),
+       ('24-01-2020', '25-01-2020', 'ACTIVE', 10),
+       ('20-01-2020', '21-02-2020', 'ACTIVE', 9),
+       ('20-02-2020', '21-03-2020', 'ACTIVE', 9),
+       ('20-03-2020', '21-04-2020', 'ACTIVE', 1),
+       ('20-04-2020', '21-05-2020', 'ACTIVE', 1),
+       ('20-05-2020', '21-06-2020', 'ACTIVE', 3),
+       ('20-06-2020', '21-07-2020', 'ACTIVE', 5);
+
+INSERT INTO product (description, name, price, remaining_quantity)
+VALUES ('test1', 'paintings', 11, 2),
+       ('test2', 'paints', 12, 5),
+       ('test3', 'brushes ', 13.4, 4),
+       ('test4', 'canvas ', 16, 3),
+       ('test5', 'easel ', 18.4, 15),
+       ('test6', 'jewelry ', 19.9, 11),
+       ('test7', 'ring ', 25.99, 12),
+       ('test8', 'braclet ', 32, 13),
+       ('test9', 'chain ', 31, 14),
+       ('test10', 'gold ', 66, 15),
+       ('test11', 'silver ', 78, 16),
+       ('test12', 'paper ', 44, 17),
+       ('test13', 'glue ', 44, 18),
+       ('test14', 'paints ', 35, 19),
+       ('test15', 'envelopes ', 44, 20);
+
+INSERT INTO order_product (product_id, order_id, created_at, count)
+VALUES
+    (2, 2, '04-05-2022', 1),
+    (3, 3, '04-06-2022', 1),
+    (4, 4, '04-07-2022', 1),
+    (5, 5, '04-08-2022', 1),
+    (6, 6, '04-09-2022', 1),
+    (7, 7, '04-10-2022', 1),
+    (8, 8, '04-11-2022', 1),
+    (9, 9, '04-12-2022', 1),
+    (10, 10, '04-11-2022', 1),
+    (11, 11, '04-10-2022', 1),
+    (12, 12, '04-09-2022', 1),
+    (13, 13, '04-08-2022', 1),
+    (14, 14, '04-07-2021', 1),
+    (15, 15, '04-06-2021', 1),
+    (6, 15, '04-03-2021', 1),
+    (11, 15, '04-02-2021', 1),
+    (6, 12, '04-01-2021', 1),
+    (2, 15, '04-11-2021', 1),
+    (9, 2, '04-10-2021', 1),
+    (3, 15, '04-07-2021', 1),
+    (11, 4, '04-08-2021', 1),
+    (5, 15, '04-09-2021', 1),
+    (12, 6, '04-11-2021', 1),
+    (7, 15, '04-11-2021', 1),
+    (12, 8, '04-12-2021', 1)
 
 
